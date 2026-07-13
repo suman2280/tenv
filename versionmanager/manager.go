@@ -346,6 +346,7 @@ func (m VersionManager) Uninstall(requestedVersion string) error {
 
 	if versionfinder.IsValid(requestedVersion) {
 		cleanedVersion := versionfinder.Clean(requestedVersion)
+
 		return m.uninstallSpecificVersion(installPath, cleanedVersion)
 	}
 
@@ -568,15 +569,18 @@ func (m VersionManager) uninstallSpecificVersion(installPath string, version str
 		if errors.Is(err, os.ErrNotExist) {
 			msg := loghelper.Concat(m.FolderName, " ", version, " is not installed")
 			m.Conf.Displayer.Display(msg)
+
 			return fmt.Errorf("%w: %s", errVersionNotInstalled, msg)
 		}
 
 		m.Conf.Displayer.Display(loghelper.Concat("Uninstallation of ", m.FolderName, " ", version, " failed with error : ", err.Error()))
+
 		return err
 	}
 
 	if err := os.RemoveAll(targetPath); err != nil {
 		m.Conf.Displayer.Display(loghelper.Concat("Uninstallation of ", m.FolderName, " ", version, " failed with error : ", err.Error()))
+
 		return err
 	}
 

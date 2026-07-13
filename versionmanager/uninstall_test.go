@@ -77,7 +77,7 @@ func TestUninstall(t *testing.T) {
 		}
 
 		unwrapped := errsFromJoin(uninstallErr)
-		if unwrapped == nil || len(unwrapped) == 0 {
+		if len(unwrapped) == 0 {
 			t.Fatal("expected joined error with at least one wrapped error")
 		}
 
@@ -85,6 +85,7 @@ func TestUninstall(t *testing.T) {
 		for _, u := range unwrapped {
 			if errors.Is(u, errVersionNotInstalled) {
 				found = true
+
 				break
 			}
 		}
